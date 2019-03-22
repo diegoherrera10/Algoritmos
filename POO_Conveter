@@ -1,0 +1,120 @@
+class data: #Clase con solo propiedades
+    def __init__(self,voltage_in,load,Fs,voltage_out,voltage_ripple,current_ripple):
+        self.voltage_in = voltage_in
+        self.load = load
+        self.Fs = Fs
+        self.voltage_out = voltage_out
+        self.voltage_ripple = voltage_ripple
+        self.current_ripple = current_ripple
+        
+        
+class valores_convertidor:
+    def imprimir_duty(self,ratio):
+        print("El duty del convertidor es: ", ratio)
+        
+    def imprimir_IL(self,IL):
+        print("La corriente del convertidor es: ", IL)
+        
+    def imprimir_inductor(self,inductor):
+        print("El valor del inductor del convertidor es: ", inductor)
+        
+    def imprimir_capacitor(self,capacitor):
+        print("El valor del capacitor del convertidor es: ", capacitor)
+        
+    
+        
+    
+class Boost: #Clase con metodos 
+    
+    def duty(self,vin,vout):
+        self.voltaje_in = vin
+        self.voltaje_out = vout
+        self.ratio = 1-(self.voltaje_in/self.voltaje_out)
+        return self.ratio
+    
+    def current_inductor(self,vout,ratio,resistance,c_ripple):
+        self.Vout=vout
+        self.Ratio=ratio
+        self.Resistance=resistance
+        self.IL = self.Vout/((1-self.Ratio)*self.Resistance)
+        self.C_ripple = c_ripple
+        return self.IL, self.IL*self.C_ripple    
+
+    def Inductance(self,vin,ratio,fs,current_ripple):
+        self.Vin = vin
+        self.Ratio = ratio
+        self.Ts = 1/fs
+        self.Current_ripple = current_ripple
+        self.inductance_value = (self.Vin*self.Ts*self.Ratio)/(2*self.Current_ripple)
+        return self.inductance_value
+    
+    def Capacitance(self,vout,ratio,fs,resistance, v_ripple):
+        self.Vout = vout
+        self.Ratio = ratio
+        self.Ts = 1/fs
+        self.Resistance = resistance
+        self.V_ripple = v_ripple
+        self.dVout = self.Vout*self.V_ripple
+        self.Capacitor = (self.Vout*self.Ratio*self.Ts)/(2*self.dVout*self.Resistance)
+        return self.Capacitor
+    
+class Buck: #Clase con metodos 
+    
+    def duty(self,vin,vout):
+        self.voltaje_in = vin
+        self.voltaje_out = vout
+        self.ratio = (self.voltaje_out/self.voltaje_in)
+        return self.ratio
+    
+    def current_inductor(self,vin,resistance,c_ripple):
+        self.Vin=vin
+        self.Resistance=resistance
+        self.IL = self.Vin/self.Resistance
+        self.C_ripple = c_ripple
+        return self.IL, self.IL*self.C_ripple 
+  
+
+    def Inductance(self,vout,vin,current_ripple):
+        self.Vin = vin
+        self.Vout = vout
+        self.Current_ripple = current_ripple
+        self.inductance_value = (self.Vout - self.Vin)/(2*self.Current_ripple)
+        return self.inductance_value
+    
+    def Capacitance(self, fs, c_ripple, v_ripple, vout):
+        self.C_ripple = c_ripple
+        self.V_ripple = v_ripple
+        self.Vout = vout
+        self.Ts = 1/fs
+        self.dVout = self.Vout*self.V_ripple
+        self.Capacitor = (self.C_ripple * self.Ts)/(8 * self.dVout)
+        return self.Capacitor
+    
+class convertidor_boost(Boost, valores_convertidor):
+    def boost_converter():
+        return print("Convertidor Boost seleccionado")
+    
+class convertidor_buck(Buck, valores_convertidor):
+    def buck_converter():
+        return print("Convertidor Buck seleccionado")
+    
+def main():
+    datos = data(15,4,50000,220,0.05,0.1)
+    Convertidor1 = convertidor_boost()
+    
+
+    
+    Convertidor1.imprimir_capacitor(Convertidor1.Capacitance(datos.voltage_out,Convertidor1.duty(datos.voltage_in,datos.voltage_out)
+    ,datos.Fs,datos.load, datos.voltage_ripple))
+    Convertidor1.imprimir_inductor(Convertidor1.Inductance(datos.voltage_in,Convertidor1.duty(datos.voltage_in,datos.voltage_out)
+    ,datos.Fs,Convertidor1.current_inductor(datos.voltage_out,Convertidor1.duty(datos.voltage_in,datos.voltage_out)
+    ,datos.load,datos.current_ripple)[1]))
+    Convertidor1.imprimir_duty(Convertidor1.duty(datos.voltage_in,datos.voltage_out))
+    Convertidor1.imprimir_IL(Convertidor1.current_inductor(datos.voltage_out,Convertidor1.duty(datos.voltage_in,datos.voltage_out)
+    ,datos.load,datos.current_ripple)[0])
+
+    
+    
+    
+    
+main()
