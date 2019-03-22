@@ -1,2 +1,1 @@
-# Algoritmos
-Códigos de algoritmos y programacion 2
+Código que permite calcular los elemtentos de diseño de un convertidor Boost y buck partiendo de los parametros de entrada como lo son Voltaje de entrada, Voltaje de salida, Frecuencia de conmutación, Carga resistiva y unos factores de diseño conocidos como Delta I y Delta V
